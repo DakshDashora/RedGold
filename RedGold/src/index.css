@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Whites & near whites for backgrounds */
+  --background: 0 0% 100%;             /* White */
+  --card: 0 100% 98%;                  /* Very light red tint (subtle) */
+
+  /* Main body & card text: Black */
+  --foreground: 0 0% 7%;               /* Near black - for regular text */
+  --card-foreground: 0 0% 7%;
+
+  /* Red for headings, key numbers, buttons, icons, etc. */
+  --primary: 358 80% 54%;              /* Vivid, strong red */
+  --primary-foreground: 0 0% 100%;     /* White text on red backgrounds */
+
+  /* Secondary backgrounds: light soft red (for cards/panels) */
+  --secondary: 0 60% 98%;              /* Pale red (like #FFF5F5) */
+  --secondary-foreground: 358 80% 54%; /* Use main red for titles/numbers inside cards */
+
+  /* Muted gray for disabled and muted text */
+  --muted: 0 0% 95%;                   /* Light gray background */
+  --muted-foreground: 0 0% 55%;        /* Medium gray text */
+
+  /* Accent: Pink/red for extra highlights, badges */
+  --accent: 350 90% 65%;               /* Vibrant pink-red or badge red */
+  --accent-foreground: 0 0% 100%;      /* White */
+
+  /* Error/destructive (deep red) */
+  --destructive: 355 80% 47%;          /* Even deeper red */
+  --destructive-foreground: 0 0% 100%; /* White on error */
+
+  /* Border & input fields */
+  --border: 0 60% 93%;                 /* Very light red/gray border (almost white) */
+  --input: 0 60% 98%;                  /* Card background */
+  --ring: 358 80% 54%;                 /* Same as primary for focus */
+
+  --radius: 0.625rem;
+}
