@@ -1,5 +1,3 @@
-"use client"
-
 import React, { useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { Button } from "../Components/ui/button"
@@ -53,7 +51,7 @@ export default function RegisterPage() {
 
       if (res.ok) {
         alert(data.message || "Registration successful!")
-        navigate("/login") // ✅ replaces window.location.href
+        navigate("/login")
       } else {
         alert(data.message || "Registration failed.")
       }
@@ -68,27 +66,171 @@ export default function RegisterPage() {
       <div className="container mx-auto max-w-2xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6"
+          >
             <ArrowLeft className="h-4 w-4" />
             Back to Home
           </Link>
+
           <div className="flex items-center justify-center gap-2 mb-4">
             <Heart className="h-8 w-8 text-primary fill-primary" />
             <span className="text-2xl font-bold">RedGold</span>
           </div>
+
           <h1 className="text-3xl font-bold text-foreground mb-2">Join Our Community</h1>
-          <p className="text-muted-foreground">Create your account and start saving lives today</p>
+          <p className="text-muted-foreground">
+            Create your account and start saving lives today
+          </p>
         </div>
 
+        {/* Registration Form */}
         <Card>
           <CardHeader>
             <CardTitle>Create Account</CardTitle>
             <CardDescription>Fill in your details to register</CardDescription>
           </CardHeader>
+
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* (rest of your form remains exactly the same) */}
+              {/* Name & DOB */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Full Name</Label>
+                  <Input
+                    placeholder="Enter your full name"
+                    value={formData.Name}
+                    onChange={(e) => handleChange("Name", e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Date of Birth</Label>
+                  <Input
+                    type="date"
+                    value={formData.Dob}
+                    onChange={(e) => handleChange("Dob", e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
 
+              {/* Blood Group & Phone */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Blood Group</Label>
+                  <Select
+                    value={formData.BloodGroup}
+                    onValueChange={(value) => handleChange("BloodGroup", value)}
+                    required
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select blood group" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {bloodGroups.map((bg) => (
+                        <SelectItem key={bg} value={bg}>
+                          {bg}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Phone Number</Label>
+                  <Input
+                    type="tel"
+                    placeholder="Enter your phone number"
+                    value={formData.PhoneNumber}
+                    onChange={(e) => handleChange("PhoneNumber", e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Email & Password */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Email</Label>
+                  <Input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={formData.Email}
+                    onChange={(e) => handleChange("Email", e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Password</Label>
+                  <Input
+                    type="password"
+                    placeholder="Create a password"
+                    value={formData.password}
+                    onChange={(e) => handleChange("password", e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Address */}
+              <div className="space-y-2">
+                <Label>Address</Label>
+                <Textarea
+                  placeholder="Enter your full address"
+                  value={formData.Address}
+                  onChange={(e) => handleChange("Address", e.target.value)}
+                  required
+                />
+              </div>
+
+              {/* City */}
+              <div className="space-y-2">
+                <Label>City</Label>
+                <Input
+                  placeholder="Enter your city"
+                  value={formData.City}
+                  onChange={(e) => handleChange("City", e.target.value)}
+                  required
+                />
+              </div>
+
+              {/* Medical Conditions */}
+              <div className="space-y-2">
+                <Label>Medical Conditions (Optional)</Label>
+                <Textarea
+                  placeholder="List any relevant medical conditions"
+                  value={formData.MedicalCondition}
+                  onChange={(e) => handleChange("MedicalCondition", e.target.value)}
+                />
+              </div>
+
+              {/* Emergency Contact */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Emergency Contact Name</Label>
+                  <Input
+                    placeholder="Enter contact name"
+                    value={formData.EmergencyContactName}
+                    onChange={(e) => handleChange("EmergencyContactName", e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Emergency Contact Phone</Label>
+                  <Input
+                    type="tel"
+                    placeholder="Enter contact phone"
+                    value={formData.EmergencyContactPhone}
+                    onChange={(e) => handleChange("EmergencyContactPhone", e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Submit Button */}
               <Button type="submit" className="w-full">
                 Create Account
               </Button>
