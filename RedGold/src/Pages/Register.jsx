@@ -9,9 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Textarea } from "../Components/ui/textarea"
 import { Heart, ArrowLeft } from "lucide-react"
 import { Link } from "react-router-dom"
+import { BASE_URL } from "../config";
 
-
-const BASE_URL = "http://localhost:8000/auth/"
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -43,7 +42,7 @@ export default function RegisterPage() {
     }
 
     try {
-      const res = await fetch(`${BASE_URL}register`, {
+      const res = await fetch(`${BASE_URL}auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
