@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 
 DATABASE_URL = os.getenv("DATABASE_URL")  # Render env var (your Neon URL)
 
-engine = create_engine(DATABASE_URL)
+engine = create_engine(DATABASE_URL,  pool_pre_ping=True,   pool_recycle=1800)
 sessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 Base = declarative_base()
 
