@@ -6,3 +6,4 @@ sqlalchemy
 alembic
 python-jose
 python-multipart
+psycopg2-binary
