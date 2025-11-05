@@ -6,9 +6,9 @@ from database import Base
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(String(50), primary_key=True, index=True)
+    id = Column(String(100), primary_key=True, index=True)
     Email = Column(String(50), nullable=False, unique=True, index=True)
-    password = Column(String(50), nullable=False)
+    password = Column(String(200), nullable=False)
     Name = Column(String(50), nullable=False)
     Dob = Column(Date, nullable=False)
     BloodGroup = Column(String(5), nullable=False)
@@ -38,8 +38,8 @@ class User(Base):
 class BloodRequest(Base):
     __tablename__ = "blood_requests"
 
-    id = Column(String, primary_key=True, index=True)
-    user_id = Column(String(50), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    id = Column(String(100), primary_key=True, index=True)
+    user_id = Column(String(100), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     blood_group = Column(String(10), nullable=False)
     units = Column(Integer, nullable=False)
     urgency_level = Column(String(50), nullable=False)
@@ -51,8 +51,8 @@ class BloodRequest(Base):
     status = Column(String(20), default="Pending", nullable=False)
     created_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc), nullable=False)
     updated_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc), nullable=False)
-    accepted_by = Column(String(50), ForeignKey("users.id"), nullable=True, default=None)
-    proof_document = Column(String, nullable=True)
+    accepted_by = Column(String(100), ForeignKey("users.id"), nullable=True, default=None)
+    proof_document = Column(String(500), nullable=True, default= None)
     score = Column(Integer, default=0)
     # Relationships
     user = relationship(
@@ -78,8 +78,8 @@ class BloodRequest(Base):
 class BloodRequestHistory(Base):
     __tablename__ = "blood_request_history"
 
-    id = Column(String, primary_key=True)
-    request_id = Column(String, ForeignKey("blood_requests.id", ondelete="CASCADE"), nullable=False)
+    id = Column(String(100), primary_key=True)
+    request_id = Column(String(100), ForeignKey("blood_requests.id", ondelete="CASCADE"), nullable=False)
     previous_status = Column(String(20), nullable=False)
     new_status = Column(String(20), nullable=False)
     changed_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc), nullable=False)
