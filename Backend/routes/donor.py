@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 from typing import List
 import uuid
 import os
-
+from sqlalchemy import func
 from database import get_db
 from models import User, BloodRequest, BloodRequestHistory
 from schemas import (
@@ -36,13 +36,21 @@ def compatible_groups(bg: str) -> List[str]:
 
 # ---------------- 1️⃣ Nearby compatible requests ----------------
 @router.get("/nearby-requests", response_model=List[NearbyRequestResponse])
-def get_nearby_requests(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    # Only pending requests are visible
-    return db.query(BloodRequest).filter(
-        BloodRequest.user.has(City=current_user.City),
-        BloodRequest.blood_group.in_(compatible_groups(current_user.BloodGroup)),
-        BloodRequest.status == "Pending"
-    ).all()
+def get_nearby_requests(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    compatible = compatible_groups(current_user.BloodGroup)
+
+    return (
+        db.query(BloodRequest)
+        .filter(
+            BloodRequest.user.has(func.lower(User.City) == func.lower(current_user.City)),
+            BloodRequest.blood_group.in_(compatible),
+            BloodRequest.status == "Pending"
+        )
+        .all()
+    )
 
 # ---------------- 2️⃣ Donation history ----------------
 @router.get("/history", response_model=List[DonationHistoryResponse])
