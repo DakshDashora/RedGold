@@ -1,4 +1,5 @@
 from datetime import timedelta, datetime, timezone
+import os
 from jose import JWTError, jwt
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
@@ -7,41 +8,46 @@ from database import get_db
 from models import User
 
 
-SECRET_KEY="kjdfhehrgliwejrgijergljoiuerhflihewfkjhwkljf"
-ALGORITHM="HS256"
+# Retrieve JWT secret from environment variable
+SECRET_KEY = os.getenv("JWT_SECRET")
+if not SECRET_KEY:
+    raise RuntimeError("Environment variable JWT_SECRET is not set")
+
+ALGORITHM = "HS256"
 
 
 
-def create_token(data: dict, expires:timedelta):
-    to_encode= data.copy()
-    expire= datetime.now(timezone.utc)+(expires)
-    to_encode.update({"exp":expire.timestamp()})
+def create_token(data: dict, expires: timedelta):
+    to_encode = data.copy()
+    expire = datetime.now(timezone.utc) + (expires)
+    to_encode.update({"exp": expire.timestamp()})
     encoded_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_token
 
-def verify_access_token(token:str):
+
+def verify_access_token(token: str):
     try:
-        payload= jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
     except JWTError as e:
         print(str(e))
         return None
 
 
-oauth2scheme=OAuth2PasswordBearer(tokenUrl="auth/login")
-def get_current_user(token:str =Depends(oauth2scheme), db :Session= Depends(get_db))->User:
-    payload=verify_access_token(token)
+oauth2scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
+def get_current_user(token: str = Depends(oauth2scheme), db: Session = Depends(get_db)) -> User:
+    payload = verify_access_token(token)
 
     if payload is None:
         raise HTTPException(
             status_code=401,
             detail="Invalid token",
-            headers={"WWW-authenticate":"Bearer"}
+            headers={"WWW-authenticate": "Bearer"}
         )
     
-    user_id= payload.get("id")
+    user_id = payload.get("id")
     if user_id is None:
-        raise HTTPException(status_code=401,detail="User id not found in token")
+        raise HTTPException(status_code=401, detail="User id not found in token")
      
     user = db.query(User).filter(User.id == user_id).first()
     if user is None:
