@@ -1,4 +1,5 @@
 from datetime import timedelta, datetime, timezone
+import os
 from jose import JWTError, jwt
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
@@ -7,8 +8,9 @@ from database import get_db
 from models import User
 
 
-SECRET_KEY="kjdfhehrgliwejrgijergljoiuerhflihewfkjhwkljf"
-ALGORITHM="HS256"
+# Retrieve JWT secret key from environment variable with fallback to default (not recommended for production)
+SECRET_KEY = os.getenv("JWT_SECRET_KEY", "kjdfhehrgliwejrgijergljoiuerhflihewfkjhwkljf")
+ALGORITHM = "HS256"
 
 
 
