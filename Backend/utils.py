@@ -1,4 +1,5 @@
 from datetime import timedelta, datetime, timezone
+import os
 from jose import JWTError, jwt
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
@@ -7,8 +8,10 @@ from database import get_db
 from models import User
 
 
-SECRET_KEY="kjdfhehrgliwejrgijergljoiuerhflihewfkjhwkljf"
-ALGORITHM="HS256"
+SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+if not SECRET_KEY:
+    raise EnvironmentError("Environment variable 'JWT_SECRET_KEY' is required but not set.")
+ALGORITHM = "HS256"
 
 
 
